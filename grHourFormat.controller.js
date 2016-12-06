@@ -1,5 +1,6 @@
 /**
  * Created by gabriel.rohden on 30/11/2016.
+ * The main module directive controller.
  */
 (function(){
     'use strict';
@@ -10,6 +11,7 @@
         var baseMins = 60; //base calculations
         var maxMins = 59; //max
         var maxHours =  $scope.maxHour ? $scope.maxHour : Infinity;
+        var minStr;
         var convertToMinsPoint = 23;
         var maxString = maxHours+'h 59m';
 
@@ -28,7 +30,6 @@
                 $scope.maxHour
             );
 
-            //se a key do model vem indefinida, quer dizer que a pattern nao deu match. alterar o value vai faze-la desaparecer na view
             if ($scope.ngModel !== undefined) {
                 $scope.ngModel = readable;
             }
@@ -68,7 +69,7 @@
                 value = getHourOrMinuteToFloat(value);
             }
 
-            return floatToHourFormatFilter(value, baseMins, maxHours, maxString);
+            return floatToHourFormatFilter(value, maxHours, maxString, minStr, baseMins);
         }
 
         function getHourOrMinuteToFloat(strValue){
@@ -82,7 +83,6 @@
                 return Number(strValue.replace('h',''));
             }
         }
-
 
         //XXh YYm to float
         function getHourAndMinuteToFloat(strValue){

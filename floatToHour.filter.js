@@ -1,8 +1,12 @@
-( function () {
+/**
+ * Created by gabriel.rohden on 06/12/2016.
+ * A filter to convert the given valid values to the main format.
+ */
+(function () {
     'use strict';
     angular.module('GRHI').filter('floatToHourFormat', function(){
         //Float to XXh YYm  with checks
-        return function floatToFormat(float, baseMins, maxHours, maxString){
+        return function floatToFormat(float, maxHours, maxString, minStr, baseMins){
 
             if(!baseMins) baseMins = 60;
             if(!maxHours) maxHours = Infinity;
@@ -21,10 +25,10 @@
             }
 
             console.log(hours,minutes);
-            if(maxHours > hours){
+            if(maxHours >= hours){
                 //If result in zero omit or set floor.
                 if (minutes <= 0 && hours <= 0) {
-                    return;
+                    return minStr;
                 }
 
                 //Just for the space between.
