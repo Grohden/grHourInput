@@ -63,7 +63,24 @@
                 value = getHourAndMinuteToFloat(value);
             }
 
+            //Hours or minutes
+            if(/^[1-9]+[0-9]*(h|m)$/i.test(value)){
+                value = getHourOrMinuteToFloat(value);
+            }
+
             return floatToHourFormatFilter(value, baseMins, maxHours, maxString);
+        }
+
+        function getHourOrMinuteToFloat(strValue){
+            strValue+='';
+
+            if(strValue.indexOf('m')>-1){
+                return Number(strValue.replace('m','')/baseMins);
+            }
+
+            if(strValue.indexOf('h')>-1){
+                return Number(strValue.replace('h',''));
+            }
         }
 
 
