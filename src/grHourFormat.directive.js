@@ -6,13 +6,13 @@
     'use strict';
     /*global angular, console*/
     angular.module('GRHI').directive(
-        'grTimeInput', function () {
+        'grHourInput', function () {
             return {
                 restrict: "E",
                 replace: true,
-                templateUrl: 'app/grTimeInput/time.input.template.html',
-                controller: 'grTimeInputController',
-                link: grTimeInputLink,
+                templateUrl: 'app/grHourInput/src/hour.input.template.html',
+                controller: 'grHourInputController',
+                link: grHourInputLink,
                 scope: {
                     ngModel: '=',
                     maxHour: '=',
@@ -24,7 +24,7 @@
         }
     );
 
-    function grTimeInputLink(scope, elm, attrs) {
+    function grHourInputLink(scope, elm, attrs) {
         //All required attributes..
         var requiredAttrs = [
             "ngModel"

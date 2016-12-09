@@ -4,9 +4,9 @@
  */
 (function(){
     'use strict';
-    angular.module('GRHI').controller('grTimeInputController',grTimeInputController);
+    angular.module('GRHI').controller('grHourInputController',['$scope', 'floatToHourFormatFilter',grHourInputController]);
 
-    function grTimeInputController($scope,floatToHourFormatFilter){
+    function grHourInputController($scope,floatToHourFormatFilter){
 
         //Define on scope for two way binding.
         $scope.baseMinutes           = 60;
