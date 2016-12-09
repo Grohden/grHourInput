@@ -37,14 +37,16 @@
                 });
         }
 
+        //Checks if the required attributes are specified.
         for (var key in attrs) {
             if (requiredAttrs.indexOf(key) != -1) {
                 requiredAttrs.splice(requiredAttrs.indexOf(key), 1);
             }
         }
+
         if (requiredAttrs.length) {
             //Should be a warning?
-            throw new Error(requiredAttrs.join(", ") + " is required to the directive work properly!");
+            throw new Error(requiredAttrs.join(", ") + " are/is required to the directive work properly!");
         }
     }
 }());

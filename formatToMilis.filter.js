@@ -1,6 +1,6 @@
 /**
  * Created by gabriel.rohden on 06/12/2016.
- * A filter to convert back the values from the module format to miliseconds
+ * A filter to convert back the values from the module format to milliseconds
  */
 (function () {
     'use strict';

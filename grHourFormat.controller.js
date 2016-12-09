@@ -8,26 +8,27 @@
 
     function grTimeInputController($scope,floatToHourFormatFilter){
 
-        var baseMins = 60; //base calculations
-        var maxMins = 59; //max
-        var maxHours =  $scope.maxHour ? $scope.maxHour : Infinity;
-        var minStr;
-        var convertToMinsPoint = 23;
-        var maxString = maxHours+'h 59m';
+        //Define on scope for two way binding.
+        $scope.baseMinutes           = 60;
+        $scope.maxMinutes            = 59;
+        $scope.maxHours              = $scope.maxHour || Infinity;
+        $scope.maxString             = $scope.maxString || $scope.maxHour+'h 59m';
+        $scope.convertToMinutesPoint = 23;
+        //$scope.minString
 
 
-        //Inicia o valor ja convertido esperado vindo em miliseconds
-        if($scope.expected == 'miliseconds') {
+        //Init the value converted to hours.
+        if($scope.expected == 'milliseconds') {
             $scope.ngModel = getReadableTime(
-                $scope.ngModel / 60 / 1000,
-                $scope.maxHour
+                $scope.ngModel / 60 / 1000, //FIXME: this is wrong, isn't?
+                $scope
             );
         }
 
         $scope.validateAndParseDateFormat = function ($event) {
             var readable = getReadableTime (
                 $event.currentTarget.value.trim(),
-                $scope.maxHour
+                $scope
             );
 
             if ($scope.ngModel !== undefined) {
@@ -38,62 +39,64 @@
         /**
          * TODO:Document this.
          */
-        function getReadableTime(value) {
+        function getReadableTime(value,options) {
             //console.debug.apply(this,arguments);
-            //Se o model esta vazio, tenta retornar o valor da view
+
             if (value === undefined) {
-                return false;
+                return;
             }
 
-            //The intention is to convert everyone to float, make the validations and convert to the format.
+            //The intention is to convert everyone to float, make the validations and then, convert to the format.
 
             //XX:YY to float
             if(/^[0-9]*:[0-9]*?$/i.test(value)){
-                var splited = value.split(':');
-                var minutes = Number(splited[0]);
-                var hours = Number(splited[1]);
+
+                var separated = value.split(':');
+
+                var minutes   = Number(separated[0]);
+                var hours     = Number(separated[1]);
 
                 minutes = isNaN(minutes) ? 0 : minutes;
-                hours = isNaN(hours) ? 0 : hours;
+                hours   = isNaN(hours)   ? 0 : hours;
 
-                value = minutes+(hours/baseMins);
+                value = minutes+(hours/options.baseMinutes);
             }
 
             //XXh YY[m] to float
             if(/^[1-9]+[0-9]*h\s*[0-9]*m?$/i.test(value)){
-                value = getHourAndMinuteToFloat(value);
+                value = getHourAndMinuteToFloat(value, options.baseMinutes);
             }
 
             //Hours or minutes
             if(/^[1-9]+[0-9]*(h|m)$/i.test(value)){
-                value = getHourOrMinuteToFloat(value);
+                value = getHourOrMinuteToFloat(value, options.baseMinutes);
             }
 
-            return floatToHourFormatFilter(value, maxHours, maxString, minStr, baseMins);
+            return floatToHourFormatFilter(value, options);
         }
 
-        function getHourOrMinuteToFloat(strValue){
+        function getHourOrMinuteToFloat(strValue,baseMinutes){
             strValue+='';
 
-            if(strValue.indexOf('m')>-1){
-                return Number(strValue.replace('m','')/baseMins);
+            if(strValue.match(/m/i)){
+                return Number(strValue.replace(/m/i,'')/baseMinutes);
             }
 
-            if(strValue.indexOf('h')>-1){
-                return Number(strValue.replace('h',''));
+            if(strValue.match(/h/i)){
+                return Number(strValue.replace(/h/i,''));
             }
         }
 
         //XXh YYm to float
-        function getHourAndMinuteToFloat(strValue){
+        function getHourAndMinuteToFloat(strValue,baseMinutes){
             strValue = (strValue)
                 .toString()
                 .trim()
                 .replace(/\s/g, '')
-                .replace('m','')
-                .split('h');
+                .replace(/m/i,'') //TODO could put it on the above replace..
+                .split(/h/i);
 
-            return Number(strValue[0]) + (Number(strValue[1])/baseMins);
+            return Number(strValue[0]) + (Number(strValue[1])/baseMinutes);
         }
 
     }
