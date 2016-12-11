@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Hour input demo</title>
+    </head>
+    <body ng-app="Demo" ng-controller="demoController">
+        <div>
+            {{ test }}
+            <gr-hour-input ng-model="test"></gr-hour-input>
+        </div>
+        <br/>
+
+        <div>
+            Back to milis: {{ test | formatToMilis }}
+        </div>
+        <br>
+
+        <div>
+            <label>
+                {{ filterTest | floatToHourFormat :{minString: 'custom string for zero'} }}
+                <input data-ng-model="filterTest" type="number"/>
+            </label>
+        </div>
+        <div>
+            <label>
+                {{ milisToFormat | floatToHourFormat :{expected: 'milliseconds'} }}
+                <input data-ng-model="milisToFormat" type="number">
+            </label>
+        </div>
+    </body>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+    <script type="text/javascript" src="../build/grHourInput.min.js"></script>
+    <script type="text/javascript" src="./app/app.js"></script>
+</html>

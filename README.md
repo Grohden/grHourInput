@@ -8,7 +8,8 @@ I also wrote a separated filter,(i know the 'module' concept in angular, but you
 So something like `{{ 1,5 | floatToHourFormat }}` will give you *1h 30m*
 
 ##Demo
-I'll write one later, for now use the default imports.
+Well, its in the demo folder now, i'm not good or don't know were to write one aside from github.
+i'm still referencing the build folder, need to change this latter..
 
 ##Notes
 Since angular itself has <a href='https://docs.angularjs.org/api/ng/input/input%5Bnumber%5D'>problems</a> with HTML5 validation
