@@ -10,7 +10,7 @@
             return {
                 restrict: "E",
                 replace: true,
-                templateUrl: 'app/grHourInput/src/hour.input.template.html',
+                templateUrl: './hour.input.template.html',
                 controller: 'grHourInputController',
                 link: grHourInputLink,
                 scope: {
