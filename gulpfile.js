@@ -14,7 +14,7 @@ gulp.task('scripts', function () {
         .src([
             './src/grHourFormat.module.js',
             './src/floatToHour.filter.js',
-            './src/formatToMilis.filter.js',
+            './src/formatToMillis.filter.js',
             './src/grHourFormat.controller.js',
             './src/grHourFormat.directive.js'
         ])

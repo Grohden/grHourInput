@@ -1,35 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Hour input demo</title>
-    </head>
-    <body ng-app="Demo" ng-controller="demoController">
-        <div>
-            {{ test }}
-            <gr-hour-input ng-model="test"></gr-hour-input>
-        </div>
-        <br/>
-
-        <div>
-            Back to milis: {{ test | formatToMilis }}
-        </div>
-        <br>
-
-        <div>
-            <label>
-                {{ filterTest | floatToHourFormat :{minString: 'custom string for zero'} }}
-                <input data-ng-model="filterTest" type="number"/>
-            </label>
-        </div>
-        <div>
-            <label>
-                {{ milisToFormat | floatToHourFormat :{expected: 'milliseconds'} }}
-                <input data-ng-model="milisToFormat" type="number">
-            </label>
-        </div>
-    </body>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
-    <script type="text/javascript" src="../build/grHourInput.min.js"></script>
-    <script type="text/javascript" src="./app/app.js"></script>
-</html>
+<html lang="en"></html>
+<head>
+  <meta charset="UTF-8">
+  <title>Hour input demo</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+</head>
+<body data-ng-app="Demo" data-ng-controller="demoController">
+  <div class="container">
+    <div class="page-header">
+      <h2>Time input converter and filters</h2>
+      <h2><small>Format input will only convert on<strong> blur</strong></small></h2>
+    </div>
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <h3>Type the desired hour(eg: 1.5, 2:50,1,3, 0h 30m, etc)</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 form-group">
+        <gr-hour-input class="col-md-4 form-control" ng-model="hourString"></gr-hour-input>
+      </div>
+      <div class="col-md-10">
+        <h4>wich is<strong> {{ hourString }}</strong> or<strong> {{ hourString | formatToMillis }}</strong> milliseconds</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 form-group">
+        <input class="form-control" data-ng-model="milliSeconds" type="number" step="10000">
+      </div>
+      <div class="col-md-10 form-group">
+        <h4>milliseconds is equivalent to<strong> {{ milliSeconds | floatToHourFormat :{expected: 'milliseconds', minString: 'custom string for zero'} }}</strong></h4>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+<script type="text/javascript" src="../build/grHourInput.min.js"></script>
+<script type="text/javascript" src="./app/app.js"></script>

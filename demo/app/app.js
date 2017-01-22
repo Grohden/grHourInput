@@ -5,8 +5,8 @@
     'use strict';
     /*global angular*/
     angular.module('Demo', ['GRHI'])
-        .controller('demoController',function ($scope,floatToHourFormatFilter) {
-            $scope.filterTest = 1.01;
-            $scope.test="25h 10m";
+        .controller('demoController',function ($scope) {
+            $scope.milliSeconds = 3600000;
+            $scope.hourString = "25h 10m";
         });
 }());

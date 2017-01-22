@@ -4,9 +4,9 @@
  */
 (function () {
     'use strict';
-    angular.module('GRHI').filter('formatToMilis', function(){
+    angular.module('GRHI').filter('formatToMillis', function(){
         //Float to XXh YYm  with checks
-        return function getHourFormatToMilis(input){
+        return function getHourFormatToMillis(input){
             input+='';
             var list = [0,0];
             var skip = false;
