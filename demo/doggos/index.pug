@@ -24,9 +24,9 @@ block html
               strong  blur
         div.row.alert.alert-info
           div.col-md-12.col-xs-2
-              | Since the beggining of the day has been passed
+              | Since the beginning of the day has been passed
               strong  {{currentDayMillis}}
-              |  milliseconds, wich converted are equivalent to
+              |  milliseconds, which converted are equivalent to
               strong  {{ currentDayMillis | floatToHourFormat :{expected: 'milliseconds', minString: 'the beginning of the day'} }}
         div.row
           div.col-md-12.col-xs-12.form-group
