@@ -4,16 +4,22 @@
   <meta charset="UTF-8">
   <title>Hour input demo</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+  <script type="text/javascript" src="../build/grHourInput.min.js"></script>
+  <script type="text/javascript" src="./app/app.js"></script>
 </head>
 <body data-ng-app="Demo" data-ng-controller="demoController">
   <div class="container">
     <div class="page-header">
-      <h2>Time input converter and filters</h2>
-      <h2><small>Format input will only convert on<strong> blur</strong></small></h2>
+      <h1>Time input converter and filters</h1>
+      <h1><small>Format input will only convert on<strong> blur</strong></small></h1>
+    </div>
+    <div class="row alert alert-info">
+      <div class="col-md-12 col-xs-2">Since the beggining of the day has been passed<strong> {{currentDayMillis}}</strong> milliseconds, wich converted are equivalent to<strong> {{ currentDayMillis | floatToHourFormat :{expected: 'milliseconds', minString: 'the beginning of the day'} }}</strong></div>
     </div>
     <div class="row">
       <div class="col-md-12 col-xs-12 form-group">
-        <h3>Type the desired hour(eg: 1.5, 2:50,1,3, 0h 30m, etc)</h3>
+        <h3>Type the desired hour (eg: 1.5, 2:50,1,3, 0h 30m, etc):</h3>
       </div>
     </div>
     <div class="row">
@@ -21,7 +27,12 @@
         <gr-hour-input class="form-control" ng-model="hourString"></gr-hour-input>
       </div>
       <div class="col-md-10 col-xs-8">
-        <h4>wich is<strong> {{ hourString }}</strong> or<strong> {{ hourString | formatToMillis }}</strong> milliseconds</h4>
+        <h4>which is<strong> {{ hourString }}</strong> or<strong> {{ hourString | formatToMillis }}</strong> milliseconds</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-xs-12 form-group">
+        <h3>Or you can use milliseconds:</h3>
       </div>
     </div>
     <div class="row">
@@ -33,10 +44,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="well col-md-6 col-xs-10">Source code can be at:<a href="https://github.com/Grohden/grHourInput">  https://github.com/Grohden/grHourInput</a></div>
+      <h4>Source code can be found at:<a href="https://github.com/Grohden/grHourInput">  https://github.com/Grohden/grHourInput</a></h4>
     </div>
   </div>
 </body>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
-<script type="text/javascript" src="../build/grHourInput.min.js"></script>
-<script type="text/javascript" src="./app/app.js"></script>
