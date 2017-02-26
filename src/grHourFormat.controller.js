@@ -4,6 +4,7 @@
  */
 (function(){
     'use strict';
+    /* global angular */
     angular.module('GRHI').controller('grHourInputController',['$scope', 'floatToHourFormatFilter',grHourInputController]);
 
     function grHourInputController($scope,floatToHourFormatFilter){
@@ -11,7 +12,7 @@
         //Define on scope for two way binding.
         $scope.baseMinutes           = 60;
         $scope.maxMinutes            = 59;
-        $scope.maxHours              = $scope.maxHour || Infinity;
+        $scope.maxHours              = $scope.maxHour   || Infinity;
         $scope.maxString             = $scope.maxString || $scope.maxHour+'h 59m';
         $scope.convertToMinutesPoint = 23;
         //$scope.minString
@@ -37,9 +38,20 @@
         };
 
         /**
-         * TODO:Document this.
+         * Get the readable time
+         * @param {String | Number} value
+         * @param {Object} options Options object
+         * @param {Number} options.baseMinutes base minutes, don't know,
+         * if in your planet 80 minutes are equivalent to 1 hour you can change it easily
+         * @param {Number} options.maxMinutes max minutes, not tested
+         * @param {Number} options.maxHours max hour limit
+         * @param {String} options.maxString string for max hour, if not specified will use the maxHour+' 59m'
+         * @param {Number} options.convertToMinutesPoint if you specify 10 as convert point,
+         * and give 10 as value the function will return 10m, if you give 9 it will return 9h
+         * @return {String | undefined} Return the readable format if is a valid value,
+         * and if specified on options return the custom for 0 string, if the value is undefined it returns undefined
          */
-        function getReadableTime(value,options) {
+        function getReadableTime(value, options) {
             //console.debug.apply(this,arguments);
 
             if (value === undefined) {
