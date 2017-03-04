@@ -1,5 +1,5 @@
 /**
- * Created by gabriel.rohden on 30/11/2016.
+ * Created by Gabriel Rohden on 30/11/2016.
  * The main module directive controller.
  */
 (function(){
@@ -7,29 +7,28 @@
     /* global angular */
     angular.module('GRHI').controller('grHourInputController',['$scope', 'floatToHourFormatFilter',grHourInputController]);
 
-    function grHourInputController($scope,floatToHourFormatFilter){
+    function grHourInputController($scope, floatToHourFormatFilter) {
 
-        //Define on scope for two way binding.
-        $scope.baseMinutes           = 60;
-        $scope.maxMinutes            = 59;
-        $scope.maxHours              = $scope.maxHour   || Infinity;
-        $scope.maxString             = $scope.maxString || $scope.maxHour+'h 59m';
-        $scope.convertToMinutesPoint = 23;
-        //$scope.minString
+        const baseMinutes = 60;
 
+        if (!$scope.options) {
+            $scope.options = {};
+        }
 
         //Init the value converted to hours.
-        if($scope.expected == 'milliseconds') {
+        if ($scope.options.expected == 'milliseconds') {
             $scope.ngModel = getReadableTime(
                 $scope.ngModel / 60 / 1000, //FIXME: this is wrong, isn't?
-                $scope
+                $scope.options
             );
         }
 
+
+        //FIXME use controller as
         $scope.validateAndParseDateFormat = function ($event) {
-            var readable = getReadableTime (
+            let readable = getReadableTime(
                 $event.currentTarget.value.trim(),
-                $scope
+                $scope.options
             );
 
             if ($scope.ngModel !== undefined) {
@@ -40,14 +39,7 @@
         /**
          * Get the readable time
          * @param {String | Number} value
-         * @param {Object} options Options object
-         * @param {Number} options.baseMinutes base minutes, don't know,
-         * if in your planet 80 minutes are equivalent to 1 hour you can change it easily
-         * @param {Number} options.maxMinutes max minutes, not tested
-         * @param {Number} options.maxHours max hour limit
-         * @param {String} options.maxString string for max hour, if not specified will use the maxHour+' 59m'
-         * @param {Number} options.convertToMinutesPoint if you specify 10 as convert point,
-         * and give 10 as value the function will return 10m, if you give 9 it will return 9h
+         * @param {Object} options Options object for floatToHourFilter
          * @return {String | undefined} Return the readable format if is a valid value,
          * and if specified on options return the custom for 0 string, if the value is undefined it returns undefined
          */
@@ -63,31 +55,31 @@
             //XX:YY to float
             if(/^[0-9]*:[0-9]*?$/i.test(value)){
 
-                var separated = value.split(':');
+                let separated = value.split(':');
 
-                var minutes   = Number(separated[0]);
-                var hours     = Number(separated[1]);
+                let minutes = Number(separated[0]);
+                let hours = Number(separated[1]);
 
                 minutes = isNaN(minutes) ? 0 : minutes;
                 hours   = isNaN(hours)   ? 0 : hours;
 
-                value = minutes+(hours/options.baseMinutes);
+                value = minutes + (hours / baseMinutes);
             }
 
             //XXh YY[m] to float
             if(/^[1-9]+[0-9]*h\s*[0-9]*m?$/i.test(value)){
-                value = getHourAndMinuteToFloat(value, options.baseMinutes);
+                value = getHourAndMinuteToFloat(value);
             }
 
             //Hours or minutes
             if(/^[1-9]+[0-9]*(h|m)$/i.test(value)){
-                value = getHourOrMinuteToFloat(value, options.baseMinutes);
+                value = getHourOrMinuteToFloat(value);
             }
 
             return floatToHourFormatFilter(value, options);
         }
 
-        function getHourOrMinuteToFloat(strValue,baseMinutes){
+        function getHourOrMinuteToFloat(strValue) {
             strValue+='';
 
             if(strValue.match(/m/i)){
@@ -100,7 +92,7 @@
         }
 
         //XXh YYm to float
-        function getHourAndMinuteToFloat(strValue,baseMinutes){
+        function getHourAndMinuteToFloat(strValue) {
             strValue = (strValue)
                 .toString()
                 .trim()

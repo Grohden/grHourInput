@@ -3,23 +3,13 @@
  * A filter and its models to convert the given valid values to the main format.
  */
 
-//FIXME: This should be in another place?
-
-/** A filter option model */
-function FilterOptionModel(maxHours, baseMins, minString, maxString){
-    this.maxHours   = maxHours;
-    this.baseMins   = baseMins;
-    this.maxString  = maxString;
-    this.minString  = minString;
-}
-
-function defaultOptions(){
-    return new FilterOptionModel(Infinity,60);
-}
+/*global angular*/
 
 (function () {
     'use strict';
+
     angular.module('GRHI').filter('floatToHourFormat', function(){
+        const baseMinutes = 60;
         /**
          * Float to XXh YYm  with checks
          * @param float {Number} float to be converted
@@ -27,16 +17,13 @@ function defaultOptions(){
          */
         return function floatToFormat(float, options){
 
-
-            if (!options) options = {};
-
-            var maxHours  = options.maxHours || Infinity;
-            var baseMins  = options.baseMinutes || 60;
-            var maxString = options.maxString || options.maxHours + 'h 59m';
-            var minString = options.minString;
+            let configurations = angular.extend({
+                maxHours: Infinity,
+                customHours: {}
+            }, options);
 
             //Default conversions options(nope, don't use /=, is a wrong option)
-            switch(options.expected){
+            switch (configurations.expected) {
                 case 'milliseconds':
                     float = float / 60 / 60 / 1000;
                     break;
@@ -48,39 +35,60 @@ function defaultOptions(){
                     break;
             }
 
-            //is a valid float or integer?
-            if(!(/^[0-9]*(\.|,)?[0-9]*$/i.test(float))) return float;
+            //is a invalid float or integer?
+            if (!(/^[0-9]*(\.|,)?[0-9]*$/i.test(float))) {
+                return float;
+            }
 
             //comma support
             float = Number((float + '').replace(',','.'));
 
-            var minutes =  Number(((float * baseMins) % baseMins).toFixed(0));
-            var hours = Math.floor(Number(float));
+            let minutes = Number(((float * baseMinutes) % baseMinutes).toFixed(0));
+            let hours = Math.floor(Number(float));
 
             //Checks if its the minutes should be converted to hours.
-            if (minutes >= baseMins) {
-                hours += Number((minutes / baseMins).toFixed(0));
+            if (minutes >= baseMinutes) {
+                hours += Number((minutes / baseMinutes).toFixed(0));
                 minutes = 0;
             }
 
-            if(maxHours >= hours){
+            if (hours <= configurations.maxHours) {
                 //If result in zero omit or set floor.
                 if (minutes <= 0 && hours <= 0) {
-                    return minString;
+                    let format = "0h 0m";
+                    let customHour = configurations.customHours[format];
+                    if (customHour) {
+                        return customHour;
+                    } else {
+                        return format;
+                    }
                 }
 
                 //Just for the space between.
                 if(hours>0 && minutes>0){
-                    return hours+'h '+minutes+'m';
+                    let format = `${hours}h ${minutes}m`;
+                    let customHour = configurations.customHours[format];
+                    if (customHour) {
+                        return customHour;
+                    } else {
+                        return format;
+                    }
                 }
 
                 //else it does'nt have space.
-                hours = hours>0 ? hours+'h' : '';
-                minutes =  minutes>0 ? minutes+'m' : '';
+                hours = hours > 0 ? `${hours}h` : '';
+                minutes = minutes > 0 ? `${minutes}m` : '';
 
-                return hours+minutes;
+                let customHour = configurations.customHours[hours + minutes];
+                //If a custom string is specified return it
+                if (customHour) {
+                    return customHour;
+                } else {
+                    //Else return the normal string
+                    return hours + minutes;
+                }
             } else {
-                return maxString;
+                return `${configurations.maxHours} 59m`;
             }
 
         }

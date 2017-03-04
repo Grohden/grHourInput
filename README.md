@@ -14,23 +14,26 @@ Also the project has the same demo in the demo folder
 ##Usage
 ## Options
 
-Filter floatToHourFormat options: `{{ 1,5 | floatToHourFormat:options }}`
-
-Property                | Type      | Default               | Description
----                     |:---:      |:---:                  |---
-maxHours                | Number    | `Infinity`            | A number to specify the maximun hour that the user can put on input.
-minString               | String    | undefined             | A custom string for when user inputs 0 hours/minutes
-convertToMinutesPoint   | Number    | 23                    | if you specify 10 as convert point, and give 10 as value the function will return 10m, if you give 9 it will return 9h
+Filter `floatToHourFormat` options:
 
 
+On view you can use something like: `{{ 1,5 | floatToHourFormat:options }}`
+
+
+On JS:
 ```javascript
 var options = {
-  maxHours: 23,
-  minString : "",
+  customHours: {
+    "10h 30m":"Hello there",
+    "10h 31m": "Ginurul Kinub"
+  },
 };
-var value = floatToHourFormatFilter(1,5,options);
 
-console.log(value); //1h 30m
+var filter = floatToHourFormatFilter; 
+
+console.log(filter(1.5,options)); //1h 30m
+console.log(filter(10.5,options)); //Hello there
+console.log(filter(10.51,options)); //Ginurul Kinub
 ```
 
 ##Notes

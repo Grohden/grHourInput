@@ -1,15 +1,77 @@
 /**
- * Created by gabri on 11/12/2016.
+ * Created by gabriel.rohden on 11/02/2017.
+ * Gulp tasks
  */
-var gulp        = require('gulp');
-var gulpUtil    = require('gulp-util');
-var uglify      = require('gulp-uglify');
-var watch       = require('gulp-watch');
-var concat      = require('gulp-concat');
-var embededTemplates = require('gulp-angular-embed-templates');
+const fs = require('fs');
+const pug = require('gulp-pug');
+const gulp = require('gulp');
+const babel = require("gulp-babel");
+const watch = require('gulp-watch');
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
+const gulpUtil = require('gulp-util');
+const embeddedTemplates = require('gulp-angular-embed-templates');
+
+//gulpUtil.env.type = 'production';
+gulpUtil.env.type = 'client';
 
 
-gulp.task('scripts', function () {
+/*-----------------------*\
+    Tasks Configurations
+\*-----------------------*/
+const VIEWS_EXTENSION = 'pug';
+const VIEWS_SRC_FOLDER = './demo/doggos';
+const VIEWS_DEST_FOLDER = './demo/';
+const SCRIPTS_EXTENSION = 'js';
+
+/*-----------------*\
+        Tasks
+\*-----------------*/
+
+
+//- Views
+gulp.task('watch-views', watchViews);
+
+gulp.task('compile-views', compileViews);
+
+//- Scripts
+gulp.task('watch-scripts', watchScripts);
+
+gulp.task('compile-scripts', compileScripts);
+
+//- All
+gulp.task('compile-all', ['compile-views', 'compile-scripts']);
+
+gulp.task('watch-all', ['watch-views', 'watch-scripts']);
+
+
+/*-----------------*\
+      Functions
+\*-----------------*/
+
+//- Demo Views
+function compileViews() {
+    gulpUtil.log(`compiling views to build/`);
+
+    return gulp.src(`${VIEWS_SRC_FOLDER}/index.${VIEWS_EXTENSION}`)
+        .pipe(pug({
+            pretty: true
+        }))
+        .pipe(gulp.dest(`${VIEWS_DEST_FOLDER}`));
+}
+
+function watchViews() {
+    gulp.watch(`${VIEWS_SRC_FOLDER}/*.${VIEWS_EXTENSION}`, ['compile-views'])
+        .on('change', function (event) {
+            gulpUtil.log(`File ${event.path} was ${event.type}, running views compile..`);
+        });
+
+
+}
+
+//- Scripts
+function compileScripts() {
+    gulpUtil.log('compiling scripts to build/js ');
     return gulp
         .src([
             './src/grHourFormat.module.js',
@@ -18,15 +80,16 @@ gulp.task('scripts', function () {
             './src/grHourFormat.controller.js',
             './src/grHourFormat.directive.js'
         ])
-        .pipe(embededTemplates())
+        .pipe(embeddedTemplates())
         .pipe(concat('grHourInput.min.js'))
-        .pipe(uglify())
+        .pipe(babel())
+        .pipe(gulpUtil.env.type == "client" ? uglify() : gulpUtil.noop())
         .pipe(gulp.dest('build/'))
-});
+}
 
-gulp.task('watch',function () {
-    gulp.watch('src/*.js',function(event){
-        gulpUtil.log(`File ${event.path} was ${event.type}, running tasks..`);
-        gulp.run('scripts');
-    });
-});
+function watchScripts() {
+    gulp.watch(`src/resources/scripts/*.${SCRIPTS_EXTENSION}`, ['compile-scripts'])
+        .on('change', function (event) {
+            gulpUtil.log(`File ${event.path} was ${event.type}, running scripts compile..`);
+        });
+}

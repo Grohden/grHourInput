@@ -8,8 +8,8 @@
         //Float to XXh YYm  with checks
         return function getHourFormatToMillis(input){
             input+='';
-            var list = [0,0];
-            var skip = false;
+            let list = [0, 0];
+            let skip = false;
             if(input.match(/m/i) && input.match(/h/i)){
                 skip = true;
                 list = input
@@ -17,11 +17,11 @@
                     .split(/h/i);
             }
 
-            if(input.match(/h/i) && !skip){
+            if (!skip && input.match(/h/i)) {
                 list[0] = input.replace(/h/i,'');
             }
 
-            if(input.match(/m/i) && !skip){
+            if (!skip && input.match(/m/i)) {
                 list[1] = input.replace(/m/i,'');
             }
 

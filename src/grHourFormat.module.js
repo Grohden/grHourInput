@@ -1,5 +1,6 @@
 /**
- * Created by gabriel.rohden on 30/11/2016.
+ * Created by Gabriel Rohden on 30/11/2016.
+ * GHRI default module
  */
 (function () {
     'use strict';

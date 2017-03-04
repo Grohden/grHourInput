@@ -15,10 +15,7 @@
                 link: grHourInputLink,
                 scope: {
                     ngModel: '=',
-                    maxHour: '=',
-                    preventEnter: '@', //This should be a regex to check for any keys..
-                    expected: '@',
-                    minString:'@'
+                    options: '=?'
                 }
             }
         }
@@ -26,19 +23,12 @@
 
     function grHourInputLink(scope, elm, attrs) {
         //All required attributes..
-        var requiredAttrs = [
+        let requiredAttrs = [
             "ngModel"
         ];
 
-        if (scope.preventEnter == 'true') {
-            elm.on('keypress',
-                function (e) {
-                    if (e.key == "Enter") e.preventDefault();
-                });
-        }
-
         //Checks if the required attributes are specified.
-        for (var key in attrs) {
+        for (let key in attrs) {
             if (requiredAttrs.indexOf(key) != -1) {
                 requiredAttrs.splice(requiredAttrs.indexOf(key), 1);
             }

@@ -15,7 +15,7 @@ block html
       script(type="text/javascript" src="../build/grHourInput.min.js")
       script(type="text/javascript" src="./app/app.js")
 
-    body(data-ng-app="Demo" data-ng-controller="demoController")
+    body(data-ng-app="Demo" data-ng-controller="demoController as demo")
       div.container
         div.page-header
           h1 Time input converter and filters
@@ -25,31 +25,31 @@ block html
         div.row.alert.alert-info
           div.col-md-12.col-xs-2
               | Since the beginning of the day has been passed
-              strong  {{currentDayMillis}}
+              strong  {{demo.currentDayMillis}}
               |  milliseconds, which converted are equivalent to
-              strong  {{ currentDayMillis | floatToHourFormat :{expected: 'milliseconds', minString: 'the beginning of the day'} }}
+              strong  {{ demo.currentDayMillis | floatToHourFormat :{expected: 'milliseconds'} }}
         div.row
           div.col-md-12.col-xs-12.form-group
             h3 Type the desired hour (eg: 1.5, 2:50,1,3, 0h 30m, etc):
         div.row
           div.col-md-2.col-xs-4.form-group
-            gr-hour-input.form-control(ng-model="hourString")
+            gr-hour-input.form-control(ng-model="demo.hourString",options="demo.mainInputOptions")
           div.col-md-10.col-xs-8
             h4
               | which is
-              strong  {{ hourString }}
+              strong  {{ demo.hourString }}
               |  or
-              strong  {{ hourString | formatToMillis }}
+              strong  {{ demo.hourString | formatToMillis }}
               |  milliseconds
         div.row
           div.col-md-12.col-xs-12.form-group
             h3 Or you can use milliseconds:
         div.row
           div.col-md-2.col-xs-4.form-group
-            input.form-control(data-ng-model="milliSeconds" type="number" step=10000)
+            input.form-control(data-ng-model="demo.milliSeconds" type="number" step=10000)
           div.col-md-10.col-xs-8.form-group
             h4 milliseconds is equivalent to
-              strong  {{ milliSeconds | floatToHourFormat :{expected: 'milliseconds', minString: 'custom string for zero'} }}
+              strong  {{ demo.milliSeconds | floatToHourFormat : demo.milliSecondsConfigurations }}
         div.row
           h4
             | Source code can be found at:
