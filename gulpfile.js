@@ -12,8 +12,8 @@ const uglify = require('gulp-uglify');
 const gulpUtil = require('gulp-util');
 const embeddedTemplates = require('gulp-angular-embed-templates');
 
-//gulpUtil.env.type = 'production';
-gulpUtil.env.type = 'client';
+//gulpUtil.env.type = 'development';
+gulpUtil.env.type = 'production';
 
 
 /*-----------------------*\
@@ -83,12 +83,12 @@ function compileScripts() {
         .pipe(embeddedTemplates())
         .pipe(concat('grHourInput.min.js'))
         .pipe(babel())
-        .pipe(gulpUtil.env.type == "client" ? uglify() : gulpUtil.noop())
+        .pipe(gulpUtil.env.type == "production" ? uglify() : gulpUtil.noop())
         .pipe(gulp.dest('build/'))
 }
 
 function watchScripts() {
-    gulp.watch(`src/resources/scripts/*.${SCRIPTS_EXTENSION}`, ['compile-scripts'])
+    gulp.watch(`src/*.${SCRIPTS_EXTENSION}`, ['compile-scripts'])
         .on('change', function (event) {
             gulpUtil.log(`File ${event.path} was ${event.type}, running scripts compile..`);
         });
