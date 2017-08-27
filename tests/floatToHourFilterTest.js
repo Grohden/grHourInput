@@ -19,7 +19,4 @@ describe('Test format conversions', function () {
     expect(floatToHourFormat("1h 50m")).toBe('1h 50m');
   });
 
-  it('sums wrong minutes values', function () {
-    expect(floatToHourFormat("1h 90m")).toBe('2h 30m');
-  });
 });
