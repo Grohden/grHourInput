@@ -12,7 +12,7 @@ It also validate values for hours, the final string should be like *XX*h *YY*m.
 
 You can find a demo at [here](https://grohden.github.io/grHourInput/)
 
-## Avaiable filters and directive
+## Available filters and directive
 
 ### Filter `floatToHourFormat`
 
