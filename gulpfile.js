@@ -1,6 +1,7 @@
 /**
  * Created by gabriel.rohden on 11/02/2017.
  * Gulp tasks
+ * TODO:ADD LINTER!
  */
 const fs = require('fs');
 const pug = require('gulp-pug');

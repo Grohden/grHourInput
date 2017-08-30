@@ -6,6 +6,7 @@
     'use strict';
     angular.module('GRHI').filter('formatToMillis', function(){
         //Float to XXh YYm  with checks
+        //TODO: add imutability!!!
         return function getHourFormatToMillis(input){
             input+='';
             let list = [0, 0];

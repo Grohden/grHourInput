@@ -5,7 +5,7 @@
 (function(){
     'use strict';
     /* global angular */
-    angular.module('GRHI').controller('grHourInputController',['$scope', 'floatToHourFormatFilter',grHourInputController]);
+    angular.module('GRHI').controller('grHourInputController', ['$scope', 'floatToHourFormatFilter', grHourInputController]);
 
     function grHourInputController($scope, floatToHourFormatFilter) {
 
