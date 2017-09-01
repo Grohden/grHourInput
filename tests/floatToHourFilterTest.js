@@ -1,4 +1,4 @@
-describe('Test format conversions', function () {
+describe('Format converter,', function () {
 
   beforeEach(module('GRHI'));
 
@@ -17,6 +17,16 @@ describe('Test format conversions', function () {
 
   it('preserve format', function () {
     expect(floatToHourFormat("1h 50m")).toBe('1h 50m');
+  });
+
+  it('return zero for negative float', function () {
+    expect(floatToHourFormat(-1.45)).toBe('0h 0m');
+  });
+
+  it('supports custom hours convertions', function () {
+    expect(floatToHourFormat(1.5, {
+      customHours: {"1h 30m": "hello word!"} 
+    })).toBe('hello word!');
   });
 
 });

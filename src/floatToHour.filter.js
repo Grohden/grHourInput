@@ -8,11 +8,17 @@
 (function () {
   'use strict';
 
-  angular.module('GRHI').filter('floatToHourFormat', function () {
-    const baseMinutes = 60;
+  angular
+    .module('GRHI')
+    .filter('floatToHourFormat', filterWrapper);
 
-    const isInvalidValidFormat = (x) => !(/^[0-9]*(\.|,)?[0-9]*$/i.test(x));
-    const asValidNumber = (x) => Number(x.toString().replace(',', '.'));
+  const baseMinutes = 60; //it could be 59.
+  const isInvalidValidFormat = (x) => !(/^-?[0-9]*(\.|,)?[0-9]*$/i.test(x));
+  const asValidNumber = (x) => Number(x.toString().replace(',', '.'));
+  const asFixedNumber = (n, fix) => Number(n.toFixed(fix || 0))
+
+  filterWrapper.$inject = [];
+  function filterWrapper() {
     /**
      * Float to XXh YYm  with checks
      * @param float {Number} float to be converted
@@ -30,9 +36,9 @@
         customHours: {}
       }, options);
 
-      const timeValue = (function () {
+      const timeValue = ((timeValue) => {
         //Default conversions options
-        switch (configurations.expected) {
+        switch (timeValue) {
           case 'milliseconds':
             return asValidNumber(float) / 60 / 60 / 1000;
           case 'seconds':
@@ -42,60 +48,25 @@
           default:
             return asValidNumber(float);
         }
-      })();
+      })(configurations.expected);
 
-      let minutes = Number(((timeValue * baseMinutes) % baseMinutes).toFixed(0));
-      let hours = Math.floor(Number(timeValue));
-
-      //Checks if its the minutes should be converted to hours.
-      if (minutes >= baseMinutes) {
-        hours += Number((minutes / baseMinutes).toFixed(0));
-        minutes = 0;
-      }
-
-      let format;
-      let customHour;
+      const hours = Math.floor(timeValue);
+      const minutes = asFixedNumber((timeValue * baseMinutes) % baseMinutes);
 
       if (hours <= configurations.maxHours) {
         //If result in zero omit or set floor.
-        if (minutes <= 0 && hours <= 0) {
-          format = "0h 0m";
-          customHour = configurations.customHours[format];
-          if (customHour) {
-            return customHour;
-          } else {
-            return format;
-          }
-        }
-        
-        //Just for the space between.
-        if (hours > 0 && minutes > 0) {
-          format = `${hours}h ${minutes}m`;
-          customHour = configurations.customHours[format];
-          if (customHour) {
-            return customHour;
-          } else {
-            return format;
-          }
+        if (minutes + hours < 0) {
+          return configurations.customHours["0h 0m"] || "0h 0m";
         }
 
-        //else it does'nt have space.
-        hours = hours > 0 ? `${hours}h` : '';
-        minutes = minutes > 0 ? `${minutes}m` : '';
-
-        customHour = configurations.customHours[hours + minutes];
-        //If a custom string is specified return it
-        if (customHour) {
-          return customHour;
-        } else {
-          //Else return the normal string
-          return hours + minutes;
-        }
+        const formated = (hours > 0 ? `${hours}h ` : '') + (minutes > 0 ? `${minutes}m` : '');
+        return configurations.customHours[formated] || formated;
       } else {
         return `${configurations.maxHours} 59m`;
       }
     }
 
     return floatToFormat
-  });
+  }
+
 })();
