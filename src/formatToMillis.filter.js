@@ -6,6 +6,7 @@
   'use strict';
   angular.module('GRHI').filter('formatToMillis', function () {
     //Float to XXh YYm  with checks
+    //FIXME: use lodash for fusion/deflorestation benefits!!
     return function getHourFormatToMillis(input) {
       const normalized = (x => {
         if (/^\s*[0-9]+h\s*[0-9]+m$/i.test(x)) {
