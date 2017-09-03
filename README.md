@@ -16,7 +16,7 @@ You can find a demo at [here](https://grohden.github.io/grHourInput/)
 
 ### Directive
 
-The directive is using the `floatToHourFormat`, so the same options are supported here
+The directive is using the `floatToHourFormat` filter, so the same options are supported here
 
 ```HTML
 <gr-hour-input class="form-control" ng-model="demo.hourString" options="{'customHours':{'12h 00m':'Ma men!'}}" /> 
