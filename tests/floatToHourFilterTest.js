@@ -23,6 +23,10 @@ describe('Format converter,', function () {
     expect(floatToHourFormat(-1.45)).toBe('0h 0m');
   });
 
+  it('preserve value if invalid', function () {
+    expect(floatToHourFormat("a145")).toBe('a145');
+  });
+
   it('supports custom hours convertions', function () {
     expect(floatToHourFormat(1.5, {
       customHours: {"1h 30m": "hello word!"} 
