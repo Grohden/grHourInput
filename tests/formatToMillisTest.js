@@ -15,4 +15,8 @@ describe('Test format to millis filter', function () {
     expect(formatToMillis("00001h 00000m")).toBe(3600000);
   });
 
+  it('return undefined for invalid string', function () {
+    expect(formatToMillis("000 00000m")).toBe(undefined);
+  });
+
 });

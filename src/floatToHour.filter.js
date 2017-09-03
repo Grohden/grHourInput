@@ -31,36 +31,22 @@
         return float;
       }
 
+      const timeValue = asValidNumber(float);
+      const hours = Math.floor(timeValue);
+      const minutes = asFixedNumber((timeValue * baseMinutes) % baseMinutes);
+      const formated = (hours > 0 ? `${hours}h ` : '') + (minutes > 0 ? `${minutes}m` : '');
       const configurations = angular.extend({
         maxHours: Infinity,
         customHours: {}
       }, options);
 
-      const timeValue = ((timeValue) => {
-        //Default conversions options
-        switch (timeValue) {
-          case 'milliseconds':
-            return asValidNumber(float) / 60 / 60 / 1000;
-          case 'seconds':
-            return asValidNumber(float) / 60 / 60;
-          case 'minutes':
-            return asValidNumber(float) / 60;
-          default:
-            return asValidNumber(float);
-        }
-      })(configurations.expected);
-
-      const hours = Math.floor(timeValue);
-      const minutes = asFixedNumber((timeValue * baseMinutes) % baseMinutes);
-
       if (hours <= configurations.maxHours) {
         //If result in zero omit or set floor.
         if (minutes + hours < 0) {
           return configurations.customHours["0h 0m"] || "0h 0m";
+        } else { 
+          return configurations.customHours[formated] || formated;
         }
-
-        const formated = (hours > 0 ? `${hours}h ` : '') + (minutes > 0 ? `${minutes}m` : '');
-        return configurations.customHours[formated] || formated;
       } else {
         return `${configurations.maxHours} 59m`;
       }
