@@ -23,6 +23,12 @@ describe('Format converter,', function () {
     expect(floatToHourFormat(-1.45)).toBe('0h 0m');
   });
 
+  it('convert based on unit time option', function () {
+    expect(floatToHourFormat(60 * 60 * 1000, { expected: 'milliseconds' })).toBe('1h');
+    expect(floatToHourFormat(60 * 60, { expected: 'seconds' })).toBe('1h');
+    expect(floatToHourFormat(60, { expected: 'minutes' })).toBe('1h');
+  });
+
   it('preserve value if invalid', function () {
     expect(floatToHourFormat("a145")).toBe('a145');
   });

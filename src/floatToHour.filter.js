@@ -13,9 +13,23 @@
     .filter('floatToHourFormat', filterWrapper);
 
   const baseMinutes = 60; //it could be 59.
+  
   const isInvalidValidFormat = (x) => !(/^-?[0-9]*(\.|,)?[0-9]*$/i.test(x));
   const asValidNumber = (x) => Number(x.toString().replace(',', '.'));
-  const asFixedNumber = (n, fix) => Number(n.toFixed(fix || 0))
+  const asFixedNumber = (n, fix) => Number(n.toFixed(fix || 0));
+  
+  const defaultOptions = {
+    maxHours: Infinity,
+    customHours: {}
+  };
+
+  const unitsConverters = {
+    milliseconds: (value) => asValidNumber(value) / 60 / 60 / 1000,
+    seconds: (value) => asValidNumber(value) / 60 / 60,
+    minutes: (value) => asValidNumber(value) / 60,
+    default: asValidNumber
+  };
+
 
   filterWrapper.$inject = [];
   function filterWrapper() {
@@ -30,22 +44,19 @@
       if (isInvalidValidFormat(float)) {
         return float;
       }
-
-      const timeValue = asValidNumber(float);
+      const configurations = angular.extend({}, defaultOptions, options);
+      const timeValue = unitsConverters[configurations.expected || 'default'](float);
       const hours = Math.floor(timeValue);
       const minutes = asFixedNumber((timeValue * baseMinutes) % baseMinutes);
       const formated = (hours > 0 ? `${hours}h ` : '') + (minutes > 0 ? `${minutes}m` : '');
-      const configurations = angular.extend({
-        maxHours: Infinity,
-        customHours: {}
-      }, options);
+
 
       if (hours <= configurations.maxHours) {
         //If result in zero omit or set floor.
         if (minutes + hours < 0) {
           return configurations.customHours["0h 0m"] || "0h 0m";
-        } else { 
-          return configurations.customHours[formated] || formated;
+        } else {
+          return configurations.customHours[formated] || formated.trim();
         }
       } else {
         return `${configurations.maxHours} 59m`;
