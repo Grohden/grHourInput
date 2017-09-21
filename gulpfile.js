@@ -50,7 +50,7 @@ gulp.task('watch-tests', watchTests);
 gulp.task('run-tests', runTests);
 
 //- All
-gulp.task('build-all', ['build-views', 'run-tests', 'build-scripts']);
+gulp.task('build-all', ['build-views', 'build-scripts', 'run-tests']);
 
 gulp.task('watch-all', ['watch-views', 'watch-scripts']);
 
