@@ -58,7 +58,7 @@ gulp.task('watch-all', ['watch-views', 'watch-scripts']);
       Functions
 \*-----------------*/
 function runTests(done) {
-  new Server({
+  return new Server({
     configFile: KARMA_CONF,
     singleRun: true
   }, done)
